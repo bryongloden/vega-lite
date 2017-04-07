@@ -2,10 +2,13 @@
 
 import {assert} from 'chai';
 
-import {bin} from '../../../src/compile/data/bin';
-import {vals} from '../../../src/util';
-
+import {BinNode} from '../../../src/compile/data/bin';
+import {Model} from '../../../src/compile/model';
 import {parseUnitModel} from '../../util';
+
+function assemble(model: Model) {
+  return new BinNode(model).assemble();
+}
 
 describe('compile/data/bin', function() {
   describe('parseUnit', function() {
@@ -21,8 +24,8 @@ describe('compile/data/bin', function() {
             }
           }
         });
-        const transform = vals(bin.parseUnit(model))[0];
-        assert.deepEqual(transform[0], {
+
+        assert.deepEqual(assemble(model)[0], {
           type: 'bin',
           field: 'Acceleration',
           as: ['bin_Acceleration_start', 'bin_Acceleration_end'],
@@ -44,7 +47,8 @@ describe('compile/data/bin', function() {
           }
         }
       });
-      const transform = vals(bin.parseUnit(model))[0];
+
+      const transform = assemble(model);
 
       it('should add bin transform and correctly apply bin', function() {
         assert.deepEqual(transform[0], {
@@ -62,17 +66,5 @@ describe('compile/data/bin', function() {
         });
       });
     });
-  });
-
-  describe('parseLayer', function() {
-    // TODO: write test
-  });
-
-  describe('parseFacet', function() {
-    // TODO: write test
-  });
-
-  describe('assemble', function() {
-    // TODO: write test
   });
 });
